@@ -1,0 +1,38 @@
+title: Lateral Movement via Remote Services
+id: phantom-lateral-001
+status: experimental
+description: |
+    Detects indicators of lateral movement using PsExec, WMI,
+    WinRM, or SMB administrative shares.
+author: PHANTOM
+date: 2024/01/15
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_psexec:
+        CommandLine|contains:
+            - 'psexec'
+            - 'PsExec'
+    selection_wmi:
+        CommandLine|contains:
+            - 'wmic'
+            - '/node:'
+            - 'process call create'
+    selection_winrm:
+        CommandLine|contains:
+            - 'Enter-PSSession'
+            - 'Invoke-Command'
+            - 'winrs'
+    selection_shares:
+        CommandLine|re: '\\\\\\\\[\d\.]+\\\\(C|ADMIN|IPC)\$'
+    condition: selection_psexec or selection_wmi or selection_winrm or selection_shares
+falsepositives:
+    - IT administrators using remote management tools
+    - Automated deployment systems
+level: high
+tags:
+    - attack.lateral_movement
+    - attack.t1021
+    - attack.t1021.002
+    - attack.t1047

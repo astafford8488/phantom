@@ -1,0 +1,49 @@
+# PHANTOM Default Configuration
+# ================================
+
+engine:
+  # Run autonomous threat hunting
+  hunting_enabled: true
+  # LLM model for rule generation and hunting
+  llm_model: "claude-sonnet-4-20250514"
+  # Use LLM for hunting hypotheses (requires API key)
+  llm_hunting: false
+
+sigma:
+  # Paths to load Sigma rules from
+  rule_paths:
+    - "rules/"
+  # Auto-reload rules on change
+  watch_rules: false
+
+anomaly:
+  # Isolation Forest contamination factor
+  contamination: 0.05
+  # Z-score threshold for statistical detection
+  zscore_threshold: 3.0
+  # Enable UEBA profiling
+  ueba_enabled: true
+
+correlation:
+  # Time window for temporal correlation (seconds)
+  time_window: 3600
+  # Minimum correlation score to group alerts
+  min_correlation: 0.3
+  # Correlation weights
+  entity_weight: 0.4
+  temporal_weight: 0.2
+  killchain_weight: 0.3
+  severity_weight: 0.1
+
+ingestion:
+  # Enable event enrichment
+  enrichment: true
+  # Drop events with no useful data
+  drop_empty: true
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:5173"

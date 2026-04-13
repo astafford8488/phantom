@@ -1,0 +1,35 @@
+# PHANTOM Strict Configuration
+# ================================
+# High-sensitivity mode for critical environments
+
+engine:
+  hunting_enabled: true
+  llm_model: "claude-sonnet-4-20250514"
+  llm_hunting: true
+
+sigma:
+  rule_paths:
+    - "rules/"
+  watch_rules: true
+
+anomaly:
+  # Lower contamination = fewer false negatives
+  contamination: 0.02
+  zscore_threshold: 2.5
+  ueba_enabled: true
+
+correlation:
+  time_window: 7200  # 2 hours
+  min_correlation: 0.2  # More aggressive grouping
+  entity_weight: 0.35
+  temporal_weight: 0.25
+  killchain_weight: 0.3
+  severity_weight: 0.1
+
+ingestion:
+  enrichment: true
+  drop_empty: false  # Keep all events
+
+api:
+  host: "127.0.0.1"
+  port: 8000
